@@ -68,7 +68,7 @@ public class FlowerServiceImpl implements FlowerService{
     @Override
     public List<FlowerDTO> getAll() {
         List<FlowerEntity> flowerEntityList = flowerRepository.findAll();
-        return flowerEntityList.stream().map(flowerEntity -> convertToDTO(flowerEntity)).collect(Collectors.toList());
+        return flowerEntityList.stream().map(flower -> convertToDTO(flower)).collect(Collectors.toList());
     }
 
     private FlowerDTO convertToDTO (FlowerEntity flowerEntity){

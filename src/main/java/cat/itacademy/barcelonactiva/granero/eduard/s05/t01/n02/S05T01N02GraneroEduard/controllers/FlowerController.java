@@ -3,6 +3,8 @@ package cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02Granero
 import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.domain.FlowerEntity;
 import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.dto.FlowerDTO;
 import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.services.FlowerService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.persistence.PostUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +19,22 @@ public class FlowerController {
     @Autowired
     FlowerService flowerService;
 
+    @Operation(summary = "This method for add new flower, you need to put name and country")
     @PostMapping("/add")
     public ResponseEntity<?> addFlower(@RequestBody FlowerEntity flowerEntity){
         FlowerDTO flowerDTO = flowerService.add(flowerEntity);
         return new ResponseEntity<>(flowerDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/update")
+    @Operation(summary = "This method check if exist de ID, if exist update it, need a completed body for flower")
+    @PutMapping("/update")
     public ResponseEntity<?> updateFlower(@RequestBody FlowerEntity flowerEntity){
         FlowerDTO flowerDTO = flowerService.update(flowerEntity);
         return new ResponseEntity<>(flowerDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{id}")
+    @Operation(summary = "Pass the id and then it deleted, if not found, send a HttpStatus NOT FOUND")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteFlower(@PathVariable("id")Integer flowerId){
         boolean doIt = flowerService.delete(flowerId);
         if(doIt){
@@ -39,12 +44,14 @@ public class FlowerController {
         }
     }
 
+    @Operation(summary = "Pass the id and return the FlowerDTO with this ID")
     @GetMapping("/getOne/{id}")
     public ResponseEntity<?> getOneFlower(@PathVariable("id")Integer flowerId){
         FlowerDTO flowerDTO = flowerService.getOneDTO(flowerId);
         return new ResponseEntity<>(flowerDTO, HttpStatus.FOUND);
     }
 
+    @Operation(summary = "Show all elements of flowers")
     @GetMapping("/getAll")
     public ResponseEntity<?> getAllFlowers(){
         List<FlowerDTO> flowerDTOList = flowerService.getAll();

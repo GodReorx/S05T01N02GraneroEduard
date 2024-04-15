@@ -10,7 +10,7 @@ public class FlowerDTO {
         this.pk_FlowerID = pk_FlowerID;
         this.flowerName = flowerName;
         this.flowerCountry = flowerCountry;
-        this.flowerType = checkCountryUE(flowerCountry);
+        this.flowerType = checkCountryUE(this.flowerCountry);
     }
 
     public Integer getPk_FlowerID() {
