@@ -18,35 +18,39 @@ public class FlowerController {
     @Autowired
     FlowerService flowerService;
 
-    @Operation(summary = "This method f or add new flower, you need to put name and country")
-    @PostMapping("/add")
+    @Operation(summary = "Add new Flower",
+            description = "This method is used to add a new flower. The name and country are necessary.")    @PostMapping("/add")
     public ResponseEntity<?> addFlower(@RequestBody FlowerEntity flowerEntity){
         FlowerDTO flowerDTO = flowerService.add(flowerEntity);
         return new ResponseEntity<>(flowerDTO, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "This method check if exist de ID, if exist update it, need a completed body for flower")
+    @Operation(summary = "Update a Flower",
+            description = "This method checks if the ID exists, if so, updates it. You need the whole body.")
     @PutMapping("/update")
     public ResponseEntity<?> updateFlower(@RequestBody FlowerEntity flowerEntity){
         FlowerDTO flowerDTO = flowerService.update(flowerEntity);
         return new ResponseEntity<>(flowerDTO, HttpStatus.OK);
     }
 
-    @Operation(summary = "Pass the id and then it deleted, if not found, send a HttpStatus NOT FOUND")
+    @Operation(summary = "Delete one flower",
+            description = "This method checks if the ID exists, if so, it deletes it.")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteFlower(@PathVariable("id")Integer flowerId){
         flowerService.delete(flowerId);
         return new ResponseEntity<>("Flower eliminated", HttpStatus.OK);
     }
 
-    @Operation(summary = "Pass the id and return the FlowerDTO with this ID")
+    @Operation(summary = "Show one Flower",
+            description = "This method checks if the ID exists, if so, it displays it.")
     @GetMapping("/getOne/{id}")
     public ResponseEntity<?> getOneFlower(@PathVariable("id")Integer flowerId){
         FlowerDTO flowerDTO = flowerService.getOneDTO(flowerId);
         return new ResponseEntity<>(flowerDTO, HttpStatus.FOUND);
     }
 
-    @Operation(summary = "Show all elements of flowers")
+    @Operation(summary = "Show a list of flowers",
+            description = "This method shows the complete list of flowers.")
     @GetMapping("/getAll")
     public ResponseEntity<?> getAllFlowers(){
         List<FlowerDTO> flowerDTOList = flowerService.getAll();
