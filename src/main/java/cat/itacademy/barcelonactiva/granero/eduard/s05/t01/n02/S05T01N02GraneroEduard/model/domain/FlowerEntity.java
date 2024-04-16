@@ -44,4 +44,12 @@ public class FlowerEntity {
     public void setFlowerCountry(String flowerCountry) {
         this.flowerCountry = flowerCountry;
     }
+
+    public boolean allNull(){
+        if (pk_FlowerID != null && flowerName != null && flowerCountry != null){
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

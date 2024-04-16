@@ -8,7 +8,7 @@ import java.util.List;
 public interface FlowerService {
     FlowerDTO add (FlowerEntity flowerEntity);
     FlowerDTO update (FlowerEntity flowerEntity);
-    boolean delete (Integer flowerID);
+    void delete (Integer flowerID);
     FlowerEntity getOne (Integer flowerID);
     FlowerDTO getOneDTO (Integer flowerID);
     List<FlowerDTO> getAll ();

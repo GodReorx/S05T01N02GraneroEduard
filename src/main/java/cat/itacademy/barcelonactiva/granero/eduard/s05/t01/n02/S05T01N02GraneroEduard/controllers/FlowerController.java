@@ -1,5 +1,8 @@
 package cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.controllers;
 
+import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.exceptions.FlowerIsNull;
+import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.exceptions.FlowerNotCreated;
+import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.exceptions.FlowerNotFoundException;
 import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.domain.FlowerEntity;
 import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.dto.FlowerDTO;
 import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.services.FlowerService;
@@ -16,11 +19,10 @@ import java.util.List;
 @RequestMapping("/flower")
 
 public class FlowerController {
-    //ToDo: Crear las excepciones y controlar los posibles errores
     @Autowired
     FlowerService flowerService;
 
-    @Operation(summary = "This method for add new flower, you need to put name and country")
+    @Operation(summary = "This method f or add new flower, you need to put name and country")
     @PostMapping("/add")
     public ResponseEntity<?> addFlower(@RequestBody FlowerEntity flowerEntity){
         FlowerDTO flowerDTO = flowerService.add(flowerEntity);
@@ -37,12 +39,8 @@ public class FlowerController {
     @Operation(summary = "Pass the id and then it deleted, if not found, send a HttpStatus NOT FOUND")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteFlower(@PathVariable("id")Integer flowerId){
-        boolean doIt = flowerService.delete(flowerId);
-        if(doIt){
-            return new ResponseEntity<>("Flower eliminated", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Error: Flower not found", HttpStatus.NOT_FOUND);
-        }
+        flowerService.delete(flowerId);
+        return new ResponseEntity<>("Flower eliminated", HttpStatus.OK);
     }
 
     @Operation(summary = "Pass the id and return the FlowerDTO with this ID")

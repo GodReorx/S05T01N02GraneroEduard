@@ -1,5 +1,9 @@
 package cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.services;
 
+import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.exceptions.FlowerIsNull;
+import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.exceptions.FlowerNotCreated;
+import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.exceptions.FlowerNotFoundException;
+import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.exceptions.FlowerNotGetAll;
 import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.domain.FlowerEntity;
 import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.dto.FlowerDTO;
 import cat.itacademy.barcelonactiva.granero.eduard.s05.t01.n02.S05T01N02GraneroEduard.model.repository.FlowerRepository;
@@ -17,7 +21,12 @@ public class FlowerServiceImpl implements FlowerService{
 
     @Override
     public FlowerDTO add(FlowerEntity flowerEntity) {
-        return convertToDTO(flowerRepository.save(flowerEntity));
+        if(flowerEntity.allNull()){throw new FlowerIsNull();}
+        try{
+            return convertToDTO(flowerRepository.save(flowerEntity));
+        } catch (Exception ex){
+            throw new FlowerNotCreated();
+        }
     }
 
     @Override
@@ -30,18 +39,17 @@ public class FlowerServiceImpl implements FlowerService{
             flowerUpdate.setFlowerCountry(flowerEntity.getFlowerCountry());
             return convertToDTO(flowerRepository.save(flowerUpdate));
         } else {
-            throw new RuntimeException("Record not found with ID: " + flowerEntity.getPk_FlowerID());
+            throw new FlowerNotFoundException(flowerEntity.getPk_FlowerID());
         }
     }
 
     @Override
-    public boolean delete(Integer flowerID) {
+    public void delete(Integer flowerID) {
         Optional<FlowerEntity> flowerEntity = flowerRepository.findById(flowerID);
-        if (flowerEntity.isPresent()){
+        if(flowerEntity.isPresent()) {
             flowerRepository.deleteById(flowerID);
-            return true;
         } else {
-            return false;
+            throw new FlowerNotFoundException(flowerID);
         }
     }
 
@@ -51,7 +59,7 @@ public class FlowerServiceImpl implements FlowerService{
         if (flowerEntity.isPresent()){
             return flowerEntity.get();
         } else {
-            throw new RuntimeException("Record not found with ID: " + flowerID);
+            throw new FlowerNotFoundException(flowerID);
         }
     }
 
@@ -61,14 +69,22 @@ public class FlowerServiceImpl implements FlowerService{
         if (flowerEntity.isPresent()){
             return convertToDTO(flowerEntity.get());
         } else {
-            throw new RuntimeException("Record not found with ID: " + flowerID);
+            throw new FlowerNotFoundException(flowerID);
         }
     }
 
     @Override
     public List<FlowerDTO> getAll() {
         List<FlowerEntity> flowerEntityList = flowerRepository.findAll();
-        return flowerEntityList.stream().map(flower -> convertToDTO(flower)).collect(Collectors.toList());
+        if(!flowerEntityList.isEmpty()) {
+            flowerEntityList.forEach(flower -> {
+                if (flower.allNull())
+                    throw new FlowerIsNull();
+            });
+            return flowerEntityList.stream().map(flower -> convertToDTO(flower)).collect(Collectors.toList());
+        } else {
+            throw new FlowerNotGetAll();
+        }
     }
 
     private FlowerDTO convertToDTO (FlowerEntity flowerEntity){

@@ -6,6 +6,7 @@ public class FlowerDTO {
     private String flowerCountry;
     private String flowerType;
 
+    public FlowerDTO(){}
     public FlowerDTO(Integer pk_FlowerID, String flowerName, String flowerCountry) {
         this.pk_FlowerID = pk_FlowerID;
         this.flowerName = flowerName;
