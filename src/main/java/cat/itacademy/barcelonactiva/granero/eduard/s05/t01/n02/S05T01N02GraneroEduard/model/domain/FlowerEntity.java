@@ -46,7 +46,7 @@ public class FlowerEntity {
     }
 
     public boolean allNull(){
-        if (pk_FlowerID != null && flowerName != null && flowerCountry != null){
+        if (flowerName != null && flowerCountry != null){
             return false;
         } else {
             return true;
