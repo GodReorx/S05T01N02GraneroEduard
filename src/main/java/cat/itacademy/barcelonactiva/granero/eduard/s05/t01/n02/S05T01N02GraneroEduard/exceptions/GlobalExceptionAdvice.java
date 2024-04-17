@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(FlowerNotFoundException.class)
     public ResponseEntity<String> handleFlowerNotFoundException(FlowerNotFoundException ex){
-        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(FlowerNotCreated.class)
@@ -20,11 +20,11 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(FlowerIsNull.class)
     public ResponseEntity<String> handleFlowerIsNull(FlowerIsNull ex){
-        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(FlowerNotGetAll.class)
     public ResponseEntity<String> handleFlowerNotGetAll(FlowerNotGetAll ex){
-        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
