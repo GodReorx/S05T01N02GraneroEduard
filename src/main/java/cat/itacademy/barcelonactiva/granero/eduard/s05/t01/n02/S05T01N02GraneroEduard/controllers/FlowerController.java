@@ -19,7 +19,8 @@ public class FlowerController {
     FlowerService flowerService;
 
     @Operation(summary = "Add new Flower",
-            description = "This method is used to add a new flower. The name and country are necessary.")    @PostMapping("/add")
+            description = "This method is used to add a new flower. The name and country are necessary.")
+    @PostMapping("/add")
     public ResponseEntity<?> addFlower(@RequestBody FlowerEntity flowerEntity){
         FlowerDTO flowerDTO = flowerService.add(flowerEntity);
         return new ResponseEntity<>(flowerDTO, HttpStatus.CREATED);
